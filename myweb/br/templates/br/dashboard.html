@@ -1,0 +1,109 @@
+{% extends 'br/base.html' %}
+{% load static %}
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+<link href="css/styles.css" rel="stylesheet" />
+<link href='{% static "css/styles.css" %}'rel="stylesheet">
+{% block content %}
+
+<style>
+table {
+  width:100%;
+}
+table, th, td {
+  border: 0.1px solid black;
+}
+th{
+  padding: 10px;
+  text-align: center;
+}
+td{
+  padding: 15px;
+  text-align: center;
+}
+#t01 tr{
+}
+#t01 tr:nth-child(odd) {
+ background-color: #fff;
+}
+#t01 th {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+}
+
+
+</style>
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4" style = "text-align: center;margin-top:20px;color:#6495ed">활기차게 따라하기 모니터</h1>
+    <div class="row" style ="margin-top:50px">
+
+            <div style="width:30%">
+                <div class="row">
+                    <img src="/static/images/dash_옆.png" style="height:100px;width:80%"></img>
+                    <div class="row" style="width:20%;margin-top:30px">
+                        <h1 style="width:50%;float:left">{{ t0_len }}</h1>
+                        <h3 style="width:50%;float:right;margin-top:10px">회</h3>
+                    </div>
+                </div>
+                <table id="t01" style="margin-top:20px">
+                  <tr style="height:20px">
+                    <th>시간</th>
+                    <th>비고</th>
+                  </tr>
+                {% for t in t0 %}
+                  <tr>
+                    <td>{{t.start_time}}</td>
+                    <td><a href="/br/temp/{{t0_exercise}}/{{t.username}}/{{t.id}}">자세히</a></td>
+                  </tr>
+                {% endfor %}
+                </table>
+            </div>
+
+            <div style="width:30%">
+                <div class="row">
+                    <img src="/static/images/dash_위_2.png" style="height:100px;width:80%"></img>
+                    <div class="row" style="width:20%;margin-top:30px">
+                        <h1 style="width:50%;float:left">{{ t1_len }}</h1>
+                        <h3 style="width:50%;float:right;margin-top:10px">회</h3>
+                    </div>
+                </div>
+                <table id="t01" style="margin-top:20px">
+                  <tr style="height:20px">
+                    <th>시간</th>
+                    <th>비고</th>
+                  </tr>
+                {% for t in t1 %}
+                  <tr>
+                    <td>{{t.start_time}}</td>
+                    <td><a href="/br/temp/{{t1_exercise}}/{{t.username}}/{{t.id}}">자세히</a></td>
+                  </tr>
+                {% endfor %}
+                </table>
+            </div>
+
+            <div style="width:30%">
+                <div class="row">
+                    <img src="/static/images/dash_앞_2.png" style="height:100px;width:80%"></img>
+                    <div class="row" style="width:20%;margin-top:30px">
+                        <h1 style="width:50%;float:left">{{ t2_len }}</h1>
+                        <h3 style="width:50%;float:right;margin-top:10px">회</h3>
+                    </div>
+                </div>
+                <table id="t01" style="margin-top:20px">
+                  <tr style="height:20px">
+                    <th>시간</th>
+                    <th>비고</th>
+                  </tr>
+                {% for t in t2 %}
+                  <tr>
+                    <td>{{t.start_time}}</td>
+                    <td><a href="/br/temp/{{t2_exercise}}/{{t.username}}/{{t.id}}">자세히</a></td>
+                  </tr>
+                {% endfor %}
+                </table>
+            </div>
+
+    </div>
+
+</div>
+{% endblock content %}

@@ -1,0 +1,382 @@
+{% extends 'br/base.html' %}
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+<link href="css/styles.css" rel="stylesheet" />
+<link href='{% static "css/styles.css" %}'rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://partner.googleadservices.com/gampad/cookie.js?domain=www.cssscript.com&amp;callback=_gfp_s_&amp;client=ca-pub-2783044520727903&amp;cookie=ID%3D224bedb357879797-22645358a4ca00e5%3AT%3D1627882582%3ART%3D1627882582%3AS%3DALNI_MYQr0wEA98IcEbXhxu29QnU-dcWHQ"></script><script async="" src="//www.google-analytics.com/analytics.js"></script><script src="https://pagead2.googlesyndication.com/pagead/managed/js/adsense/m202107290101/show_ads_impl_fy2019.js" id="google_shimpl"></script>
+{% block content %}
+    <style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto:100,300');
+
+    button[data-setter] {
+      outline: none;
+      background: transparent;
+      border: none;
+      font-family: 'Roboto';
+      font-weight: 300;
+      font-size: 18px;
+      width: 25px;
+      height: 30px;
+      color: #F7958E;
+      cursor: pointer;
+    }
+
+    button[data-setter]:hover { opacity: 0.5; }
+
+    .container {
+      position: relative;
+      top: 50px;
+      width: 100px;
+      margin: 0 auto;
+    }
+
+    .setters {
+      position: absolute;
+      left: 85px;
+      top: 75px;
+    }
+
+    .minutes-set {
+      float: left;
+      margin-right: 28px;
+    }
+
+    .seconds-set { float: right; }
+
+    .controlls {
+      position: absolute;
+      left: 75px;
+      top: 105px;
+      text-align: center;
+    }
+
+    .display-remain-time {
+      font-family: 'Roboto';
+      font-weight: 100;
+      font-size: 65px;
+      color: #F7958E;
+    }
+
+    #pause {
+      outline: none;
+      background: transparent;
+      border: none;
+      margin-top: 10px;
+      width: 50px;
+      height: 50px;
+      position: relative;
+    }
+
+    .play::before {
+      display: block;
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 16px;
+      border-top: 15px solid transparent;
+      border-bottom: 15px solid transparent;
+      border-left: 22px solid #F7958E;
+    }
+
+    .pause::after {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      width: 15px;
+      height: 30px;
+      background-color: transparent;
+      border-radius: 1px;
+      border: 5px solid #F7958E;
+      border-top: none;
+      border-bottom: none;
+    }
+
+    #pause:hover { opacity: 0.8; }
+
+    .e-c-base {
+      fill: none;
+      stroke: #B6B6B6;
+      stroke-width: 4px
+    }
+
+    .e-c-progress {
+      fill: none;
+      stroke: #F7958E;
+      stroke-width: 4px;
+      transition: stroke-dashoffset 0.7s;
+    }
+
+    .e-c-pointer {
+      fill: #FFF;
+      stroke: #F7958E;
+      stroke-width: 2px;
+    }
+
+    #e-pointer { transition: transform 0.7s; }
+    h1 { margin-top:150px; text-align:center;}
+    body { background-color:#f7f7f7;}
+
+    </style>
+
+    <style>
+        button {
+            font-size: 30px;
+            width: 140px;
+            height: 60px;
+            border-radius: 5px;
+        }
+
+        #output {
+            font-size: 4.0em;
+            text-align: center;
+        }
+
+        #startPause {
+            background-color: green;
+            border-color: green;
+        }
+
+        #reset {
+            background-color: gray;
+            border-color: gray;
+        }
+
+        .containerMrs {
+            background-color: #ffffff;
+            border-radius: 5px;
+            border: 1px solid;
+            margin: auto;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            width: 400px;
+            height: 200px;
+        }
+
+        #controls {
+            margin-left: 50px;
+            margin-top: 10px;
+            width: 310px;
+            height: 70px;
+        }
+    </style>
+
+
+
+<style type="text/css" >
+.wrap-loading{ /*화면 전체를 어둡게 합니다.*/
+    position: fixed;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    background: #ffffff; /*not in ie */
+}
+    .wrap-loading div{ /*로딩 이미지*/
+        position: fixed;
+        top:50%;
+        left:50%;
+        margin-top: -150px;
+    }
+    .display-none{ /*감추기*/
+        display:none;
+    }
+</style>
+
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+p{font-family: 'Jua', sans-serif;}
+h1{font-family: 'Jua', sans-serif;}
+h2{font-family: 'Jua', sans-serif;}
+a{font-family: 'Jua', sans-serif;}
+pre{font-family: 'Jua', sans-serif;}
+</style>
+
+
+
+<div class="row" style ="height:650px">
+    <h3 class="mt-4" style = "text-align: center;color:#6495ed">『위로 밀기』 양팔을 위로 밀고 제자리로 돌아오기</h3>
+    <div style = "margin-left:60px;width: 560px;">
+        <!-- <iframe width="800" height="400" src="https://www.youtube.com/embed/DpDoq0y66SY?start=524" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+
+        </iframe> -->
+        
+        <img src="/static/images/위.gif" width="800" height="400"></img>
+        <div class="wrap"  style="width:800px">
+            <a href="#" class="button" style = "float:center;" id ="submit">측정 시작</a>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+      <div class="circle"> <svg width="300" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(110,110)">
+          <circle r="100" class="e-c-base"></circle>
+          <g transform="rotate(-90)">
+            <circle r="100" class="e-c-progress" style="stroke-dasharray: 628.319; stroke-dashoffset: -1256.64;"></circle>
+            <g id="e-pointer" style="transform: rotate(360deg);">
+              <circle cx="100" cy="0" r="8" class="e-c-pointer"></circle>
+            </g>
+          </g>
+        </g>
+        </svg> </div>
+      <div class="controlls">
+        <div class="display-remain-time">01:00</div>
+      </div>
+    </div>
+
+
+</div>
+
+<div class="wrap-loading display-none">
+    <div>
+        <!-- <img src="/home/jes9401/Web/myweb/br/Reload-1s-200px.gif" /> -->
+        <img src="/static/images/Spinner-0.9s-190px.gif"></img>
+    </div>
+</div>
+
+
+
+    <script>
+        //circle start
+        let progressBar = document.querySelector('.e-c-progress');
+        let indicator = document.getElementById('e-indicator');
+        let pointer = document.getElementById('e-pointer');
+        let length = Math.PI * 2 * 100;
+
+        progressBar.style.strokeDasharray = length;
+
+        function update(value, timePercent) {
+          var offset = - length - length * value / (timePercent);
+          progressBar.style.strokeDashoffset = offset;
+          pointer.style.transform = `rotate(${360 * value / (timePercent)}deg)`;
+        };
+
+        //circle ends
+        const displayOutput = document.querySelector('.display-remain-time')
+        const pauseBtn = document.querySelector('.button');
+        const setterBtns = document.querySelectorAll('button[data-setter]');
+
+        let intervalTimer;
+        let timeLeft;
+        let wholeTime = 0.5 * 120; // manage this to set the whole time
+        let isPaused = false;
+        let isStarted = false;
+
+
+        update(wholeTime,wholeTime); //refreshes progress bar
+        displayTimeLeft(wholeTime);
+
+        function changeWholeTime(seconds){
+          if ((wholeTime + seconds) > 0){
+            wholeTime += seconds;
+            update(wholeTime,wholeTime);
+          }
+        }
+
+        for (var i = 0; i < setterBtns.length; i++) {
+            setterBtns[i].addEventListener("click", function(event) {
+                var param = this.dataset.setter;
+                switch (param) {
+                    case 'minutes-plus':
+                        changeWholeTime(1 * 60);
+                        break;
+                    case 'minutes-minus':
+                        changeWholeTime(-1 * 60);
+                        break;
+                    case 'seconds-plus':
+                        changeWholeTime(1);
+                        break;
+                    case 'seconds-minus':
+                        changeWholeTime(-1);
+                        break;
+                }
+              displayTimeLeft(wholeTime);
+            });
+        }
+
+        function timer (seconds){ //counts time, takes seconds
+          let remainTime = Date.now() + (seconds * 1000);
+          displayTimeLeft(seconds);
+
+          intervalTimer = setInterval(function(){
+            timeLeft = Math.round((remainTime - Date.now()) / 1000);
+            if(timeLeft < 0){
+              clearInterval(intervalTimer);
+              isStarted = false;
+              let param = {
+                'msg' : 'msg'
+              }
+                $.ajax({
+                    url : "{% url 'exercise2' %}", 
+                    type : 'POST', 
+                    data : JSON.stringify(param), 
+                    success: function(data) {
+                       console.log(data);
+                    },
+                   beforeSend:function(){
+                       $('.wrap-loading').removeClass('display-none');
+                       $('.row').addClass('display-none');
+                   },
+                   complete:function(){
+                       let url = 'https://jes9401.pythonanywhere.com/br/temp';
+                       console.log(url);
+                       location.replace(url)
+                   },
+                    error: function(err) {
+                        console.log(e)
+                    }
+                });
+
+              return ;
+            }
+            displayTimeLeft(timeLeft);
+          }, 1000);
+        }
+        function pauseTimer(event){
+          if(isStarted === false){
+            timer(wholeTime);
+            isStarted = true;
+            this.classList.remove('play');
+            this.classList.add('pause');
+
+            setterBtns.forEach(function(btn){
+              btn.disabled = true;
+              btn.style.opacity = 0.5;
+            });
+
+          }else if(isPaused){
+            this.classList.remove('play');
+            this.classList.add('pause');
+            timer(timeLeft);
+            isPaused = isPaused ? false : true
+          }else{
+            this.classList.remove('pause');
+            this.classList.add('play');
+            clearInterval(intervalTimer);
+            isPaused = isPaused ? false : true ;
+          }
+        }
+
+        function displayTimeLeft (timeLeft){ //displays time on the input
+          let minutes = Math.floor(timeLeft / 60);
+          let seconds = timeLeft % 60;
+          let displayString = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+          displayOutput.textContent = displayString;
+          update(timeLeft, wholeTime);
+        }
+
+        pauseBtn.addEventListener('click',pauseTimer);
+    </script>
+
+{% endblock content %}
+
+
+
+

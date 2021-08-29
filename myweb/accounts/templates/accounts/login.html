@@ -1,0 +1,24 @@
+{% extends "br/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section" style="margin-top: 60px">
+        <form method="POST" style="margin-left : 100px">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">로그인</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group" style="margin-top: 30px">
+                <button class="btn btn-outline-info" type="submit" >로그인</button>
+                <small class="text-muted ml-2">
+                    <!--<a href="{% url 'password_reset' %}">비밀번호를 까먹었나요?</a>-->
+                </small>
+            </div>
+        </form>
+        <div class="border-top pt-3" style="margin-left : 100px">
+            <small class="text-muted">
+                계정이 필요한가요?<a class="ml-2" href="{% url 'register' %}">가입하기</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}

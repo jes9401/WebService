@@ -1,0 +1,373 @@
+{% extends 'br/base.html' %}
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+<link href="css/styles.css" rel="stylesheet" />
+<link href='{% static "css/styles.css" %}'rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://partner.googleadservices.com/gampad/cookie.js?domain=www.cssscript.com&amp;callback=_gfp_s_&amp;client=ca-pub-2783044520727903&amp;cookie=ID%3D224bedb357879797-22645358a4ca00e5%3AT%3D1627882582%3ART%3D1627882582%3AS%3DALNI_MYQr0wEA98IcEbXhxu29QnU-dcWHQ"></script><script async="" src="//www.google-analytics.com/analytics.js"></script><script src="https://pagead2.googlesyndication.com/pagead/managed/js/adsense/m202107290101/show_ads_impl_fy2019.js" id="google_shimpl"></script>
+{% block content %}
+<style>
+.overlay{
+  position: fixed;
+  top: 0;
+  bottom: -800;
+  left: 0;
+  right: -200;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.overlay:target{
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup{
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 70%;
+  position: relative;
+  transition: all 5s ease-in-out;
+  height: 40%;
+  overflow: auto;
+}
+
+.popup .close {
+  transition: all 200ms;
+  text-decoration: none;
+}
+</style>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+p{font-family: 'Jua', sans-serif;}
+h1{font-family: 'Jua', sans-serif;}
+h2{font-family: 'Jua', sans-serif;}
+a{font-family: 'Jua', sans-serif;}
+pre{font-family: 'Jua', sans-serif; font-size: 25px;}
+</style>
+
+
+<style>
+table {
+  width:100%;
+}
+table, th{
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th{
+  padding: 15px;
+  text-align: center;
+}
+td{
+  text-align: center;
+}
+#t01 tr{
+ border-collapse:collapse;
+ border-spacing:0;
+}
+#t01 tr:nth-child(odd) {
+ background-color: #fff;
+}
+#t01 th {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+}
+</style>
+
+
+                <main>
+                    <div class="container-fluid px-4">
+
+                        <div class ="row" style="margin-top:20px">
+                            <div style ="width:20%;float:left">
+                            {% if exercise == "양 팔 옆으로 밀기" %}
+                                <img src="/static/images/temp_옆.png" style="height:100px;weight:200px"></img>
+                            {% elif exercise == "양 팔 위로 밀기" %}
+                                <img src="/static/images/temp_위_2.png" style="height:100px;weight:200px;margin-left:50px"></img>
+                            {% else %}
+                                <img src="/static/images/temp_앞.png" style="height:100px;weight:200px;margin-left:50px"></img>
+                            {% endif %}
+                            </div>
+                            <div style ="width:30%;float:left;text-align:center;margin-top:20px">
+                                <h3 style ="color:#6495ed">『{{ exercise }}』- 결과 평가</h3>
+                                <h3>정확도 {{total_standard}}% </h3>
+                            </div>
+                            <div style="width:20%">
+                                <img src="/static/images/right3.png" style="width:60%;height:60%;margin-left:20px"></img>
+                            </div>
+                            <div style ="width:30%;float:right;text-align:center;margin-top:30px">
+                                <h3 style="color:bf8040">({{total_text}})</h3>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div style="text-align:center">
+                                <p style="font-size : 30px;display:inline">『세부 평가』</p>
+                                <p style="display:inline">따라하신 동작을 3개 영역으로 확인해 보세요.</p>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-xl-4 col-md-6" style="border : solid 1px black;">
+                                <div class ="row">
+                                    <div style="float: left; width: 50%;">
+                                        <h2>각도</h2>
+                                    </div>
+                                    <div style="float: right; width: 50%;">
+                                        {% if a_color == "green" %}
+                                        <img src="/static/images/g.png" style="height:30px;float:right;margin-top:10px">
+                                        {% elif a_color == "yellow" %}
+                                        <img src="/static/images/y.png" style="height:30px;float:right;margin-top:10px">
+                                        {% else %}
+                                        <img src="/static/images/r.png" style="height:30px;float:right;margin-top:10px">
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                                <!--<img src="/static/images/test.svg" alt="킹 (체스 말)" style ="width:100%;height:100%">-->
+                                <div style="border : solid 1px black;">
+                                <svg width=100% height=200 viewBox="100 5 400 400" >{{a_graph2|safe}}</svg>
+                                </div>
+                                <div style="float:left;width:70%;margin-top:20px;margin-left:10px"><pre style="color:#a4c0f4">{{a_text}}</pre></div>
+                                <div class="card bg-primary text-dark mb-4" style="width:25%;float:right;margin-top:20px">
+                                    <div class="card-footer d-flex align-items-right justify-content-between">
+                                        <a class="small text-white stretched-link" href="#popup1">Analysis ...</a>
+                                        <!--<div class="small text-white"><i class="fas fa-angle-right"></i></div>-->
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-4 col-md-6" style="border : solid 1px black;">
+                                <div class ="row">
+                                    <div style="float: left; width: 50%;">
+                                        <h2>속도</h2>
+                                    </div>
+                                    <div style="float: right; width: 50%;">
+                                        {% if v_color == "green" %}
+                                        <img src="/static/images/g.png" style="height:30px;float:right;margin-top:10px">
+                                        {% elif v_color == "yellow" %}
+                                        <img src="/static/images/y.png" style="height:30px;float:right;margin-top:10px">
+                                        {% else %}
+                                        <img src="/static/images/r.png" style="height:30px;float:right;margin-top:10px">
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                                <div style="border : solid 1px black;">
+                                <svg width=100% height=200 viewBox="100 5 400 400" >{{v_graph2|safe}}</svg>
+                                </div>
+                                <div style="float:left;width:70%;margin-top:20px;margin-left:10px"><pre style="color:#a4c0f4;" >{{v_text}}</pre></div>
+                                <div class="card bg-primary text-dark mb-4" style="width:25%;float:right;margin-top:20px">
+                                    <div class="card-footer d-flex align-items-right justify-content-between">
+                                        <a class="small text-white stretched-link" href="#popup2">Analysis ...</a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-xl-4 col-md-6" style="border : solid 1px black;">
+                                <div class ="row">
+                                    <div style="float: left; width: 50%;">
+                                        <h2>구현 정도</h2>
+                                    </div>
+                                    <div style="float: right; width: 50%;">
+                                        {% if r_color == "green" %}
+                                        <img src="/static/images/g.png" style="height:30px;float:right;margin-top:10px">
+                                        {% elif r_color == "yellow" %}
+                                        <img src="/static/images/y.png" style="height:30px;float:right;margin-top:10px">
+                                        {% else %}
+                                        <img src="/static/images/r.png" style="height:30px;float:right;margin-top:10px">
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                                <div style="border : solid 1px black;">
+                                <svg width=100% height=200 viewBox="100 5 400 400" >{{r_graph2|safe}}</svg>
+                                </div>
+                                <div style="float:left;width:70%;margin-top:20px;margin-left:10px"><pre style="color:#a4c0f4">{{r_text}}</pre></div>
+                                <div class="card bg-primary text-dark mb-4" style="width:25%;float:right;margin-top:20px">
+                                    <div class="card-footer d-flex align-items-right justify-content-between">
+                                        <a class="small text-white stretched-link" href="#popup3">Analysis ...</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div id="popup1" class="overlay">
+                            <div class="popup">
+                                <h2>각도 그래프</h2>
+                                <!--&times는 X 아이콘-->
+                                <div style="width:100%;height:30px">
+                                </div>
+                                <div></div>
+                                <div style="float: left; width: 50%;">
+                                {{a_graph|safe}}
+                                </div>
+
+                                <div class="row">
+                                    <h2></h2>
+                                    <table id="t01" class="table table table-striped">
+                                    <thead>
+                                      <tr>
+                                        <th>시간</th>
+                                        <th>표준 동작(standard)</th>
+                                        <th>오동작1(fake1)</th>
+                                        <th>오동작2(fake2)</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% if d1 %}
+                                    {% for i in d1 %}
+                                      <tr>
+                                        <td>{{i.index}}</td>
+                                        <td>{{i.standard}}</td>
+                                        <td>{{i.fake1}}</td>
+                                        <td>{{i.fake2}}</td>
+                                      </tr>
+                                    {% endfor %}
+                                    {% endif %}
+                                    </tbody>
+                                  </table>
+                                  <p>※fake1 => 팔의 각도가 살짝 낮아진 상태, fake2 => 팔의 각도가 많이 낮아진 상태</p>
+                                </div>
+                                <div style="width:50%;height:30px;margin-top:50px">
+                                    <a class="close" href="#" style="float:right;font-size:30px">&times;닫기</a>
+                                </div>
+                                <div style="width:50%"></div>
+                            </div>
+
+                        </div>
+
+                        <div id="popup2" class="overlay">
+                            <div class="popup">
+                                <h2>속도 그래프</h2>
+                                <div style="width:100%;height:30px">
+                                </div>
+                                <div></div>
+                                <div style="float: left; width: 50%;">
+                                {{v_graph|safe}}
+                                </div>
+                            <div class="row">
+                                <h2></h2>
+                                <table id="t01" class="table table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th>시간</th>
+                                    <th>표준 동작(standard)</th>
+                                    <th>오동작1(fake1)</th>
+                                    <th>오동작2(fake2)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {% if d2 %}
+                                {% for i in d2 %}
+                                  <tr>
+                                    <td>{{i.index}}</td>
+                                    <td>{{i.standard}}</td>
+                                    <td>{{i.fake1}}</td>
+                                    <td>{{i.fake2}}</td>
+                                  </tr>
+                                {% endfor %}
+                                {% endif %}
+                                </tbody>
+                              </table>
+                              <p>※fake1 => 속도가 조금 느린 상태, fake2 => 속도가 많이 느린 상태</p>
+                                </div>
+                                <div style="width:50%;height:30px;margin-top:50px">
+                                    <a class="close" href="#" style="float:right;font-size:30px">&times;닫기</a>
+                                </div>
+                                <div style="width:50%"></div>
+                            </div>
+                        </div>
+
+                        <div id="popup3" class="overlay">
+                            <div class="popup">
+                                <h2>구현 정도 그래프</h2>
+                                <div style="width:100%;height:30px">
+                                </div>
+                                <div></div>
+                                <div style="float: left; width: 50%;">
+                                {{r_graph|safe}}
+                                </div>
+                            <div class="row">
+                                <h2></h2>
+                                <table id="t01" class="table table table-striped">
+                                <thead>
+                                  <tr>
+                                    <th>시간</th>
+                                    <th>표준 동작(standard)</th>
+                                    <th>오동작1(fake1)</th>
+                                    <th>오동작2(fake2)</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                {% if d3 %}
+                                {% for i in d3 %}
+                                  <tr>
+                                    <td>{{i.index}}</td>
+                                    <td>{{i.standard}}</td>
+                                    <td>{{i.fake1}}</td>
+                                    <td>{{i.fake2}}</td>
+                                  </tr>
+                                {% endfor %}
+                                {% endif %}
+                                </tbody>
+                              </table>
+                              <p>※fake1 => 팔이 살짝 굽은 상태, fake2 => 팔이 많이 굽은 상태</p>
+                                </div>
+                                <div style="width:50%;height:30px;margin-top:50px">
+                                    <a class="close" href="#" style="float:right;font-size:30px">&times;닫기</a>
+                                </div>
+                                <div style="width:50%"></div>
+                            </div>
+                        </div>
+
+                        <!--
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-area me-1"></i>
+                                        빈공간1
+                                    </div>
+                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-chart-bar me-1"></i>
+                                        빈공간2
+                                    </div>
+                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                </main>
+{% endblock content %}

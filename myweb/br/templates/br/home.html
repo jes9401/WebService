@@ -1,0 +1,71 @@
+{% extends 'br/base.html' %}
+{% load static %}
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+<link href="css/styles.css" rel="stylesheet" />
+<link href='{% static "css/styles.css" %}'rel="stylesheet">
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% block content %}
+<style>
+    html, body {
+
+    margin: 0;
+
+    height: 100%;
+
+    overflow: hidden;
+
+}
+
+</style>
+
+
+<div class="container-fluid px-4">
+    <h1 class="mt-4" style = "text-align: center;margin-top:-50px;color:#6495ed">『치매예방체조』 활기차게 따라하기</h1>
+    <div class="wrap">
+        <div class="row" style="width:100%;height:100%;margin-top:20px">
+            <div class="col-lg-2" style="float:center;width:50%;margin-left:100px;">
+                <img class="dotIc" src="https://i.pinimg.com/564x/34/ca/11/34ca1193b3c0954c4cc8e045d44d1bc4.jpg" width = "150"  style="margin-left: 0px;">
+                <br></br>
+                <p>
+                  <span><b style="font-size:20px">온라인 체조 도움 서비스!</b></span>
+                  <span style="font-size:20px">지금 시작해보세요!</span>
+                </p>
+                {% if user.is_authenticated %}
+                <a href={% url 'exercise1' %} class="button">체조하러 가기</a>
+                {% else %}
+                <a onclick="doLogin()" style="cursor:pointer" class="button">체조하러 가기</a>
+                {% endif %}
+            </div>
+            <div class="col-lg-2" style="float:center;width:50%;margin-left:-200px">
+                <img class="dotIc" src="https://cdns.iconmonstr.com/wp-content/assets/preview/2018/240/iconmonstr-bar-chart-thin.png" width = "150" style="margin-left: 0px;">
+                <br></br>
+                <p>
+                  <span><b style="font-size:20px">사용자님!</b></span>
+                  <span style="font-size:20px">운동 정확도를 알려드려요</span>
+                </p>
+                {% if user.is_authenticated %}
+                <a href={% url 'dashboard' %} class="button">자세히 알아보기</a>
+                {% else %}
+                <a onclick="doLogin()" style="cursor:pointer" class="button">자세히 알아보기</a>
+
+                {% endif %}
+            </div>
+        </div>
+        <img src="/static/images/main1.png" style="width:80%;height:150px;margin-top:30px">
+        <p>< 국민건강보험공단 치매예방체조 ></p>
+    </div>
+
+</div>
+
+
+
+
+<script>
+
+function doLogin() {
+  alert("로그인 해주세요!");
+//   window.location.href = "https://jes9401.pythonanywhere.com/accounts/login/";
+}
+</script>
+{% endblock content %}
+

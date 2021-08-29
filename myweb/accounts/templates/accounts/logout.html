@@ -1,0 +1,11 @@
+{% extends "br/base.html" %}
+{% block content %}
+    <div style="margin-top: 60px;margin-left:60px">
+        <h2>로그아웃 되었습니다</h2>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                <a href="{% url 'login' %}">다시 로그인하기</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}

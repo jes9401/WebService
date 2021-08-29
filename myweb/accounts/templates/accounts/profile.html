@@ -1,0 +1,24 @@
+{% extends "br/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section" style="margin-left: 60px">
+        <form method="POST" enctype="multipart/form-data" style="margin-top : 60px">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+      <!--          <h6 style="font-size: 18px;">{{ p_form|crispy }}</h6>   -->
+            </fieldset>
+            <fieldset class="form-group">
+                {{ u_form|crispy }}
+            </fieldset>
+
+    <table class="table type03" style="margin-top: 60px">
+    </table>
+
+
+      <!--      <div class="form-group" style="margin-top : 60px">
+                <button class="btn btn-outline-info" type="submit" >업데이트</button>
+            </div> -->
+        </form>
+    </div>
+{% endblock content %}

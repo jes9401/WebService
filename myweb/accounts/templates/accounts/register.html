@@ -1,0 +1,21 @@
+{% extends "br/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section" style="margin-top: 60px">
+        <form method="POST" style="margin-left : 100px">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">회원 가입</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit" >완료</button>
+            </div>
+        </form>
+        <div class="border-top pt-3" style="margin-left : 100px">
+            <small class="text-muted">
+                이미 계정이 있나요?<a class="ml-2" href="{% url 'login' %}">로그인 하기</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}
